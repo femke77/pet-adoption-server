@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../models/user.js';
+import { Pet } from '../models/pet.js';
 
 // GET /Users
 export const getAllUsers = async (_req: Request, res: Response) => {
@@ -65,3 +66,19 @@ export const deleteUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const favoritePet = async (req: Request, res: Response) => {
+  const { petId } = req.params;
+  try {
+    const user = await User.findByPk(req.session.user_id);
+    const pet = await Pet.findByPk(petId);
+    if (user && pet) {
+      await user.addPet(pet);
+      res.json({ message: 'Pet added to favorites' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}

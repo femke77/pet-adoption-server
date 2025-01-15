@@ -1,5 +1,6 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
 import bcrypt from 'bcrypt';
+import { Pet } from './pet';
 
 interface UserAttributes {
   id: number;
@@ -21,11 +22,14 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public last_name!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+  public getPets!: () => Promise<Pet[]>;
+  public addPet!: (pet: Pet) => Promise<void>;
 
   public async setPassword(password: string) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(password, saltRounds);
   }
+
 }
 
 export function UserFactory(sequelize: Sequelize): typeof User {
