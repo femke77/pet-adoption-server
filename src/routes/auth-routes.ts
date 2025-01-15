@@ -1,13 +1,19 @@
 import { Router, Request, Response } from "express";
 import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
+import { Op } from "sequelize";
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { username, password } = req.body;
-
+    const { email, username, password } = req.body;
+  
     const user = await User.findOne({
-      where: { username },
+      where: {
+        [Op.or]: [
+          { email },
+          { username }
+        ]
+      },
     });
     if (!user) {
       return res.status(401).json({ message: "Authentication failed" });
@@ -29,8 +35,8 @@ export const login = async (req: Request, res: Response) => {
       return res.json({ user: user.username, message: "You are now logged in!" });
     });
     return;
-  } catch (err) {
-    return res.status(500).json(err);
+  } catch (err: any) {
+    return res.status(500).json(err.message);
   }
 };
 

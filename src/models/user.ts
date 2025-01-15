@@ -5,6 +5,9 @@ interface UserAttributes {
   id: number;
   username: string;
   password: string;
+  email: string;
+  first_name: string;
+  last_name: string;
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
@@ -13,7 +16,9 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public id!: number;
   public username!: string;
   public password!: string;
-
+  public email!: string;
+  public first_name!: string;
+  public last_name!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
@@ -34,13 +39,34 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+        },
+      },
+      first_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          len: [8, 30],
+        },
       },
     },
     {
+      freezeTableName: true,
       sequelize,
       hooks: {
         beforeCreate: async (user: User) => {

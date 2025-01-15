@@ -15,7 +15,7 @@
       "src"
     ],
     "ext": "ts,json,js",
-    "exec": "npx tsc && node dist/server.js"
+    "exec": "npx tsc && node dist/server.js || exit 1"
   },
   "repository": {
     "type": "git",
