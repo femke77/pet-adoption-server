@@ -19,7 +19,8 @@ export const getUserById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id, {
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] },
+      include: Pet
     });
     if (user) {
       res.json(user);
@@ -35,13 +36,11 @@ export const getUserById = async (req: Request, res: Response) => {
 // PUT /Users/:id
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { username, password } = req.body;
   try {
-    const user = await User.findByPk(id);
+    const user = await User.update(req.body, {
+      where: { id: id }
+    })
     if (user) {
-      user.username = username;
-      user.password = password;
-      await user.save();
       res.json(user);
     } else {
       res.status(404).json({ message: 'User not found' });
@@ -82,3 +81,4 @@ export const favoritePet = async (req: Request, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 }
+

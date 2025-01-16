@@ -1,34 +1,37 @@
 import { Request, Response } from "express";
 import { Pet } from "../models/pet.js";
-// import { Op } from "sequelize";
 
 // GET /Pets/:type?
 export const getAllPets = async (req: Request, res: Response) => {
-  const {type, breed} = req.params
-  const whereClause = type ? breed 
-    ? { type, breed } 
-    : { type } 
-  : {};
+  const { type, breed } = req.params
+  const whereClause = type ? breed
+    ? { type, breed }
+    : { type }
+    : {};
   try {
-    const users = await Pet.findAll({where: whereClause});
-    res.json(users);
+    const pets = await Pet.findAll({ where: whereClause });
+    res.json(pets);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// GET /Pets/:id
+// GET /Pets/:id with number of users who are interested in the pet
 export const getPetById = async (req: Request, res: Response) => {
   const { id } = req.params;
+
   try {
-    const pet = await Pet.findByPk(id, {});
-    if (pet) {
-      res.json(pet);
-    } else {
-      res.status(404).json({ message: "Pet not found" });
+    const pet = await Pet.findByPk(id);
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
     }
+
+    const numUsers = await pet.countUsers(); 
+    return res.json({ ...pet.toJSON(), num_users: numUsers });
+
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -56,18 +59,11 @@ export const createPet = async (req: Request, res: Response) => {
 export const updatePet = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const pet = await Pet.findByPk(id);
+    const pet = await Pet.update(req.body, {
+      where: { id: id },
+      returning: true,
+    });
     if (pet) {
-      pet.name = req.body.name;
-      pet.age = req.body.age;
-      pet.breed = req.body.breed;
-      pet.type = req.body.type;
-      pet.gender = req.body.gender;
-      pet.location = req.body.location;
-      pet.size = req.body.size;
-      pet.image = req.body.image;
-
-      await pet.save();
       res.json(pet);
     } else {
       res.status(404).json({ message: "Pet not found" });

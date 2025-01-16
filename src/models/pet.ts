@@ -27,6 +27,7 @@ export class Pet extends Model<PetAttributes, PetCreationAttributes>
   public size!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+  public countUsers!: () => Promise<number>;
 }
 
 export function PetFactory(sequelize: Sequelize): typeof Pet {
