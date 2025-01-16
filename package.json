@@ -9,8 +9,9 @@
     "start": "npm run build && node dist/server.js --ignore client",
     "dev": "npx nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint './src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix"
+    "lint": "npx eslint ",
+    "lint:fix": "npx eslint --fix",
+    "prepare": "husky install"
   },
   "nodemonConfig": {
     "watch": [
@@ -53,6 +54,8 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^15.14.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.4.0",
     "prettier": "^3.4.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
