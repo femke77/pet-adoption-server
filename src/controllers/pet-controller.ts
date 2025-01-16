@@ -9,6 +9,8 @@ export const getAllPets = async (req: Request, res: Response) => {
     const pets = await Pet.findAll({ where: whereClause });
     res.json(pets);
   } catch (error: any) {
+    console.log(error.message);
+
     res.status(500).json({ message: error.message });
   }
 };
