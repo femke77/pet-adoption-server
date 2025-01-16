@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize, Model, Optional } from "sequelize";
+import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
 
 interface PetAttributes {
   id: number;
@@ -12,10 +12,12 @@ interface PetAttributes {
   image?: string | null;
 }
 
-interface PetCreationAttributes extends Optional<PetAttributes, "id"> {}
+interface PetCreationAttributes extends Optional<PetAttributes, 'id'> {}
 
-export class Pet extends Model<PetAttributes, PetCreationAttributes>
-  implements PetAttributes {
+export class Pet
+  extends Model<PetAttributes, PetCreationAttributes>
+  implements PetAttributes
+{
   public id!: number;
   public name!: string;
   public type!: string;
@@ -43,7 +45,7 @@ export function PetFactory(sequelize: Sequelize): typeof Pet {
         allowNull: false,
       },
       type: {
-        type: DataTypes.ENUM("dog", "cat"),
+        type: DataTypes.ENUM('dog', 'cat'),
         allowNull: false,
       },
       breed: {
@@ -55,7 +57,7 @@ export function PetFactory(sequelize: Sequelize): typeof Pet {
         allowNull: false,
       },
       gender: {
-        type: DataTypes.ENUM("M", "F"),
+        type: DataTypes.ENUM('M', 'F'),
         allowNull: false,
       },
       location: {
@@ -63,7 +65,7 @@ export function PetFactory(sequelize: Sequelize): typeof Pet {
         allowNull: false,
       },
       size: {
-        type: DataTypes.ENUM("S", "M", "L", "XL"),
+        type: DataTypes.ENUM('S', 'M', 'L', 'XL'),
         allowNull: false,
       },
       image: {
@@ -74,7 +76,7 @@ export function PetFactory(sequelize: Sequelize): typeof Pet {
     {
       freezeTableName: true,
       sequelize,
-    }
+    },
   );
 
   return Pet;

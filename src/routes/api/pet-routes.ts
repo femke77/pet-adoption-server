@@ -4,8 +4,8 @@ import {
   getPetById,
   updatePet,
   deletePet,
-  createPet
-} from '../../controllers/pet-controller.js'
+  createPet,
+} from '../../controllers/pet-controller.js';
 // import { apiGuard } from '../../middleware/authGuard.js';
 const router = express.Router();
 

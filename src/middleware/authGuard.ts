@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 declare module 'express-session' {
   interface SessionData {
@@ -9,12 +9,11 @@ declare module 'express-session' {
 }
 
 const apiGuard = (req: Request, res: Response, next: NextFunction) => {
-    if (!req.session.logged_in) {
-      res.status(403).json({ msg: 'You must login to perform this action' });
-    } else {
-      next();
-    }
-  };
-  
+  if (!req.session.logged_in) {
+    res.status(403).json({ msg: 'You must login to perform this action' });
+  } else {
+    next();
+  }
+};
 
-  export { apiGuard };
+export { apiGuard };

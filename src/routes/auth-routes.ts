@@ -1,27 +1,24 @@
-import { Router, Request, Response } from "express";
-import { User } from "../models/user.js";
-import bcrypt from "bcrypt";
-import { Op } from "sequelize";
+import { Router, Request, Response } from 'express';
+import { User } from '../models/user.js';
+import bcrypt from 'bcrypt';
+import { Op } from 'sequelize';
 
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, username, password } = req.body;
-  
+
     const user = await User.findOne({
       where: {
-        [Op.or]: [
-          { email },
-          { username }
-        ]
+        [Op.or]: [{ email }, { username }],
       },
     });
     if (!user) {
-      return res.status(401).json({ message: "Authentication failed" });
+      return res.status(401).json({ message: 'Authentication failed' });
     }
 
     const passwordIsValid = await bcrypt.compare(password, user.password);
     if (!passwordIsValid) {
-      return res.status(401).json({ message: "Authentication failed" });
+      return res.status(401).json({ message: 'Authentication failed' });
     }
 
     req.session.save((err: any) => {
@@ -32,7 +29,10 @@ export const login = async (req: Request, res: Response) => {
       req.session.user_id = user.id;
       req.session.username = user.username;
 
-      return res.json({ user: user.username, message: "You are now logged in!" });
+      return res.json({
+        user: user.username,
+        message: 'You are now logged in!',
+      });
     });
     return;
   } catch (err: any) {
@@ -54,7 +54,7 @@ export const register = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(400).json(err);
   }
-}
+};
 
 const logout = async (req: Request, res: Response) => {
   if (req.session.logged_in) {
@@ -64,15 +64,15 @@ const logout = async (req: Request, res: Response) => {
   } else {
     res.status(404).end();
   }
-}
+};
 
 const router = Router();
 
 // POST /login - Login a user
-router.post("/login", login);
+router.post('/login', login);
 // POST /register - Register a new user
-router.post("/register", register);
+router.post('/register', register);
 // POST /logout - Logout a user
-router.post("/logout", logout);
+router.post('/logout', logout);
 
 export default router;

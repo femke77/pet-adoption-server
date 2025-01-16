@@ -1,13 +1,10 @@
-import { Request, Response } from "express";
-import { Pet } from "../models/pet.js";
+import { Request, Response } from 'express';
+import { Pet } from '../models/pet.js';
 
-// GET /Pets/:type?
+// GET /Pets/:type?/:breed?
 export const getAllPets = async (req: Request, res: Response) => {
-  const { type, breed } = req.params
-  const whereClause = type ? breed
-    ? { type, breed }
-    : { type }
-    : {};
+  const { type, breed } = req.params;
+  const whereClause = type ? (breed ? { type, breed } : { type }) : {};
   try {
     const pets = await Pet.findAll({ where: whereClause });
     res.json(pets);
@@ -27,9 +24,8 @@ export const getPetById = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Pet not found' });
     }
 
-    const numUsers = await pet.countUsers(); 
+    const numUsers = await pet.countUsers();
     return res.json({ ...pet.toJSON(), num_users: numUsers });
-
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
   }
@@ -66,7 +62,7 @@ export const updatePet = async (req: Request, res: Response) => {
     if (pet) {
       res.json(pet);
     } else {
-      res.status(404).json({ message: "Pet not found" });
+      res.status(404).json({ message: 'Pet not found' });
     }
   } catch (error: any) {
     res.status(400).json({ message: error.message });
@@ -80,9 +76,9 @@ export const deletePet = async (req: Request, res: Response) => {
     const pet = await Pet.findByPk(id);
     if (pet) {
       await pet.destroy();
-      res.json({ message: "Pet deleted" });
+      res.json({ message: 'Pet deleted' });
     } else {
-      res.status(404).json({ message: "Pet not found" });
+      res.status(404).json({ message: 'Pet not found' });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });

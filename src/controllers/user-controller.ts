@@ -6,7 +6,7 @@ import { Pet } from '../models/pet.js';
 export const getAllUsers = async (_req: Request, res: Response) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] },
     });
     res.json(users);
   } catch (error: any) {
@@ -20,7 +20,7 @@ export const getUserById = async (req: Request, res: Response) => {
   try {
     const user = await User.findByPk(id, {
       attributes: { exclude: ['password'] },
-      include: Pet
+      include: Pet,
     });
     if (user) {
       res.json(user);
@@ -32,14 +32,13 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
-
 // PUT /Users/:id
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await User.update(req.body, {
-      where: { id: id }
-    })
+      where: { id: id },
+    });
     if (user) {
       res.json(user);
     } else {
@@ -80,5 +79,4 @@ export const favoritePet = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
-}
-
+};
