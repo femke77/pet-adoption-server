@@ -1,24 +1,27 @@
-import { Router, Request, Response } from 'express';
-import { User } from '../models/user.js';
-import bcrypt from 'bcrypt';
-import { Op } from 'sequelize';
+import { Router, Request, Response } from "express";
+import { User } from "../models/user.js";
+import bcrypt from "bcrypt";
+// import { Op } from "sequelize";
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { email, username, password } = req.body;
+    const { email,password } = req.body;
 
     const user = await User.findOne({
+      // where: {
+      //   [Op.or]: [{ email }, { username }],
+      // },
       where: {
-        [Op.or]: [{ email }, { username }],
+        email: email,
       },
     });
     if (!user) {
-      return res.status(401).json({ message: 'Authentication failed' });
+      return res.status(401).json({ message: "Authentication failed" });
     }
 
     const passwordIsValid = await bcrypt.compare(password, user.password);
     if (!passwordIsValid) {
-      return res.status(401).json({ message: 'Authentication failed' });
+      return res.status(401).json({ message: "Authentication failed" });
     }
 
     req.session.save((err: any) => {
@@ -30,8 +33,9 @@ export const login = async (req: Request, res: Response) => {
       req.session.username = user.username;
 
       return res.json({
-        user: user.username,
-        message: 'You are now logged in!',
+        username: user.username,
+        email: user.email,
+        id: user.id,
       });
     });
     return;
@@ -42,17 +46,17 @@ export const login = async (req: Request, res: Response) => {
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const userData = await User.create(req.body);
+    const user = await User.create(req.body);
 
     req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.username = userData.username;
+      req.session.user_id = user.id;
+      req.session.username = user.username;
       req.session.logged_in = true;
 
-      res.status(200).json(userData);
+      res.status(200).json(user);
     });
-  } catch (err) {
-    res.status(400).json(err);
+  } catch (err: any) {
+    res.status(400).json(err.message);
   }
 };
 
@@ -69,10 +73,10 @@ const logout = async (req: Request, res: Response) => {
 const router = Router();
 
 // POST /login - Login a user
-router.post('/login', login);
+router.post("/login", login);
 // POST /register - Register a new user
-router.post('/register', register);
+router.post("/register", register);
 // POST /logout - Logout a user
-router.post('/logout', logout);
+router.post("/logout", logout);
 
 export default router;
