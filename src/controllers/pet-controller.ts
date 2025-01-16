@@ -10,7 +10,6 @@ export const getAllPets = async (req: Request, res: Response) => {
     res.json(pets);
   } catch (error: any) {
     console.log(error.message);
-
     res.status(500).json({ message: error.message });
   }
 };
