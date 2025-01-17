@@ -7,7 +7,9 @@
   
   Match users with the pet of their dreams. 
 
-  This is the server side. The client is located at https://github.com/femke77/pet-adoption-client
+  This is the server side of a app using headless architecture. The client is located at https://github.com/femke77/pet-adoption-client
+
+  This app uses session authentication for no good reason other than for me to practice since I've been doing a ton of JWT lately. 
   
   ## Table of Contents 📖
   
