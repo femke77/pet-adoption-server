@@ -11,6 +11,10 @@
 
   This app uses session authentication for no good reason other than for me to practice since I've been doing a ton of JWT lately. 
   
+  A husky pre-commit hook is linting my staged files to ensure good code uniformity with prettier rules.
+
+  Sequelize is my ORM for a PostgreSql database. Express is my server. Express router handles the routing.
+  
   ## Table of Contents 📖
   
   [Installation](#installation)
