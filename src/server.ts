@@ -18,7 +18,7 @@ const sess = {
     maxAge: 300000, // alternative is using the expiration but docs prefer maxAge
     httpOnly: true, //not accessible to js e.g. document.cookie should not reveal it.
     secure: false, // should be true, meaning it won't be sent on http requests, only https.
-    sameSite: 'strict' as const, //protects against CSRF attacks
+    // sameSite: 'strict' as const, //protects against CSRF attacks
   },
   resave: false,
   saveUninitialized: true,
