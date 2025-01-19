@@ -11,7 +11,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint ",
     "lint:fix": "npx eslint --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "create_seeds": "tsx seed/index.ts",
+    "seed": "tsx seed/seed.ts"
   },
   "nodemonConfig": {
     "watch": [
@@ -32,6 +34,7 @@
   },
   "homepage": "https://github.com/femke77/pet-adoption-server#readme",
   "dependencies": {
+    "@faker-js/faker": "^9.4.0",
     "bcrypt": "^5.1.1",
     "connect-session-sequelize": "^7.1.7",
     "cors": "^2.8.5",
@@ -57,6 +60,7 @@
     "husky": "^8.0.0",
     "lint-staged": "^15.4.0",
     "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
   }

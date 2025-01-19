@@ -26,4 +26,4 @@ const Pet = PetFactory(sequelize);
 User.belongsToMany(Pet, { through: 'UserPets' });
 Pet.belongsToMany(User, { through: 'UserPets' });
 
-export { sequelize, User };
+export { sequelize, User, Pet };

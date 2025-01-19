@@ -7,7 +7,14 @@ export const getAllPets = async (req: Request, res: Response) => {
   const whereClause = type ? (breed ? { type, breed } : { type }) : {};
   try {
     const pets = await Pet.findAll({ where: whereClause });
-    res.json(pets);
+    const updatedPets = await Promise.all(
+      pets.map(async (pet) => {
+        const numUsers = await pet.countUsers();
+        const petData = pet.get({ plain: true });
+        return { ...petData, num_users: numUsers };
+      }),
+    );
+    res.json(updatedPets);
   } catch (error: any) {
     console.log(error.message);
     res.status(500).json({ message: error.message });

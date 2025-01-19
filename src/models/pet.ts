@@ -10,6 +10,7 @@ interface PetAttributes {
   location: string;
   size: string;
   image?: string | null;
+  num_users?: number;
 }
 
 interface PetCreationAttributes extends Optional<PetAttributes, 'id'> {}
@@ -69,7 +70,7 @@ export function PetFactory(sequelize: Sequelize): typeof Pet {
         allowNull: false,
       },
       image: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
