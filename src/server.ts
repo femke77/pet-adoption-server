@@ -35,7 +35,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://pawsome-pets-adoption.netlify.app/',
+      'https://pawsome-pets-adoption.netlify.app',
+      'http://192.168.1.161:3000',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
