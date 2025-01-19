@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize, Model, Optional, Association } from 'sequelize';
+import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
 import { User } from './user';
 
 interface PetAttributes {
@@ -33,11 +33,11 @@ export class Pet
   public readonly favoritedBy?: User[];
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-  public countUsers!: () => Promise<number>;
+  public countFavoritedBy!: () => Promise<number>;
 
-  public static override associations: {
-    favoritedBy: Association<Pet, User>;
-  };
+  // public static override associations: {
+  //   favoritedBy: Association<Pet, User>;
+  // };
 }
 
 export function PetFactory(sequelize: Sequelize): typeof Pet {

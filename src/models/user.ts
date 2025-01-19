@@ -25,8 +25,8 @@ export class User
   public last_name!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-  public getPets!: () => Promise<Pet[]>;
-  public addPet!: (pet: Pet) => Promise<void>;
+  public getFavortiePets!: () => Promise<Pet[]>;
+  public addFavoritePet!: (pet: Pet) => Promise<void>;
 
   public async setPassword(password: string) {
     const saltRounds = 10;

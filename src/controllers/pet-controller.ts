@@ -19,7 +19,6 @@ export const getAllPets = async (req: Request, res: Response) => {
     const updatedPets = pets.map((pet) => {
       const petData = pet.get({ plain: true });
 
-      // Check if the user has favorited this pet
       const isFavorited = userId
         ? (pet.favoritedBy?.some(
             (user: { id: number }) => user.id === userId,
@@ -29,7 +28,7 @@ export const getAllPets = async (req: Request, res: Response) => {
       return {
         ...petData,
         isFavorited,
-        num_users: pet.favoritedBy?.length || 0, // Count the number of users who favorited this pet
+        num_users: pet.favoritedBy?.length || 0,
       };
     });
     res.json(updatedPets);
@@ -50,7 +49,7 @@ export const getPetById = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Pet not found' });
     }
 
-    const numUsers = await pet.countUsers();
+    const numUsers = await pet.countFavoritedBy();
     return res.json({ ...pet.toJSON(), num_users: numUsers });
   } catch (error: any) {
     return res.status(500).json({ message: error.message });

@@ -71,7 +71,7 @@ export const favoritePet = async (req: Request, res: Response) => {
     const user = await User.findByPk(req.session.user_id);
     const pet = await Pet.findByPk(petId);
     if (user && pet) {
-      await user.addPet(pet);
+      await user.addFavoritePet(pet);
       res.json([{ message: 'Pet added to favorites' }]);
     } else {
       res.status(404).json({ message: 'User not found' });
