@@ -1,19 +1,37 @@
 import { Request, Response } from 'express';
-import { Pet } from '../models/pet.js';
+import { Pet, User } from '../models/index.js';
 
 // GET /Pets/:type?/:breed?
 export const getAllPets = async (req: Request, res: Response) => {
+  const userId = req.session?.user_id;
   const { type, breed } = req.params;
   const whereClause = type ? (breed ? { type, breed } : { type }) : {};
   try {
-    const pets = await Pet.findAll({ where: whereClause });
-    const updatedPets = await Promise.all(
-      pets.map(async (pet) => {
-        const numUsers = await pet.countUsers();
-        const petData = pet.get({ plain: true });
-        return { ...petData, num_users: numUsers };
-      }),
-    );
+    const pets = await Pet.findAll({
+      where: whereClause,
+      include: {
+        model: User,
+        as: 'favoritedBy',
+        attributes: ['id'],
+        through: { attributes: [] },
+      },
+    });
+    const updatedPets = pets.map((pet) => {
+      const petData = pet.get({ plain: true });
+
+      // Check if the user has favorited this pet
+      const isFavorited = userId
+        ? (pet.favoritedBy?.some(
+            (user: { id: number }) => user.id === userId,
+          ) ?? false)
+        : false;
+
+      return {
+        ...petData,
+        isFavorited,
+        num_users: pet.favoritedBy?.length || 0, // Count the number of users who favorited this pet
+      };
+    });
     res.json(updatedPets);
   } catch (error: any) {
     console.log(error.message);

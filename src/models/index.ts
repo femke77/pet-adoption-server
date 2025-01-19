@@ -23,7 +23,7 @@ const sequelize = process.env.DB_URL
 const User = UserFactory(sequelize);
 const Pet = PetFactory(sequelize);
 
-User.belongsToMany(Pet, { through: 'UserPets' });
-Pet.belongsToMany(User, { through: 'UserPets' });
+User.belongsToMany(Pet, { through: 'UserPets', as: 'favoritePets' });
+Pet.belongsToMany(User, { through: 'UserPets', as: 'favoritedBy' });
 
 export { sequelize, User, Pet };
