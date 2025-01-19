@@ -23,9 +23,12 @@ const sess = {
       process.env.NODE_ENV === 'production'
         ? ('none' as const)
         : ('lax' as const),
-    domain: '.onrender.com',
+    domain:
+      process.env.NODE_ENV === 'production'
+        ? 'pet-adoption-server-qa7c.onrender.com'
+        : 'localhost',
     path: '/',
-    proxy: true,
+    proxy: process.env.NODE_ENV === 'production' ? true : false,
     //cross origin requests are allowed with sameSite: 'none' and secure: true
   },
   resave: false,
