@@ -1,11 +1,11 @@
-import { Router, Request, Response } from "express";
-import { User } from "../models/user.js";
-import bcrypt from "bcrypt";
+import { Router, Request, Response } from 'express';
+import { User } from '../models/user.js';
+import bcrypt from 'bcrypt';
 // import { Op } from "sequelize";
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { email,password } = req.body;
+    const { email, password } = req.body;
 
     const user = await User.findOne({
       // where: {
@@ -15,13 +15,14 @@ export const login = async (req: Request, res: Response) => {
         email: email,
       },
     });
+    // FIXME can't have these codes as 401 due to axios interceptor
     if (!user) {
-      return res.status(401).json({ message: "Authentication failed" });
+      return res.status(400).json({ message: 'Authentication failed' });
     }
 
     const passwordIsValid = await bcrypt.compare(password, user.password);
     if (!passwordIsValid) {
-      return res.status(401).json({ message: "Authentication failed" });
+      return res.status(400).json({ message: 'Authentication failed' });
     }
 
     req.session.save((err: any) => {
@@ -73,10 +74,10 @@ const logout = async (req: Request, res: Response) => {
 const router = Router();
 
 // POST /login - Login a user
-router.post("/login", login);
+router.post('/login', login);
 // POST /register - Register a new user
-router.post("/register", register);
+router.post('/register', register);
 // POST /logout - Logout a user
-router.post("/logout", logout);
+router.post('/logout', logout);
 
 export default router;
