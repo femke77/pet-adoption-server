@@ -53,6 +53,7 @@ export const register = async (req: Request, res: Response) => {
       req.session.user_id = user.id;
       req.session.username = user.username;
       req.session.logged_in = true;
+      console.log(req.session);
 
       res.status(200).json(user);
     });
