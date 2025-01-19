@@ -15,10 +15,12 @@ const SequelizeSessionStore = SequelizeStore(session.Store);
 const sess = {
   secret: process.env.SESSION_SECRET || 'secret',
   cookie: {
-    maxAge: 300000, // alternative is using the expiration but docs prefer maxAge
+    maxAge: 24 * 60 * 60 * 1000, // alternative is using the expiration but docs prefer maxAge
     httpOnly: true, //not accessible to js e.g. document.cookie should not reveal it.
     secure: true, // should be true, meaning it won't be sent on http requests, only https.
     sameSite: 'none' as const, //protects against CSRF attacks
+    domain: '.onrender.com',
+    //cross origin requests are allowed with sameSite: 'none' and secure: true
   },
   resave: false,
   saveUninitialized: true,
