@@ -29,7 +29,7 @@ const sess = {
         : 'localhost',
     path: '/',
     proxy: process.env.NODE_ENV === 'production' ? true : false,
-    //cross origin requests are allowed with sameSite: 'none' and secure: true
+    partitioned: true, // Support for Chrome's CHIPS and Safari's partitioned cookies
   },
   resave: false,
   saveUninitialized: true,
