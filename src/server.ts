@@ -20,6 +20,8 @@ const sess = {
     secure: true, // should be true, meaning it won't be sent on http requests, only https.
     sameSite: 'none' as const, //protects against CSRF attacks
     domain: '.onrender.com',
+    path: '/',
+
     //cross origin requests are allowed with sameSite: 'none' and secure: true
   },
   resave: false,
@@ -41,6 +43,7 @@ app.use(
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
+    exposedHeaders: ['set-cookie'],
   }),
 );
 app.options('*', cors()); //preflight

@@ -33,6 +33,8 @@ export const login = async (req: Request, res: Response) => {
       req.session.user_id = user.id;
       req.session.username = user.username;
 
+      console.log('Session after login:', req.session);
+      console.log('Cookies:', req.headers.cookie);
       return res.json({
         username: user.username,
         email: user.email,
