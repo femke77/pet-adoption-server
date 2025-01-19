@@ -19,7 +19,10 @@ const sess = {
     maxAge: 24 * 60 * 60 * 1000, // alternative is using the expiration but docs prefer maxAge
     httpOnly: true, //not accessible to js e.g. document.cookie should not reveal it.
     secure: process.env.NODE_ENV === 'production', // Only require secure in production
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    sameSite:
+      process.env.NODE_ENV === 'production'
+        ? ('none' as const)
+        : ('lax' as const),
     domain: '.onrender.com',
     path: '/',
     proxy: true,
