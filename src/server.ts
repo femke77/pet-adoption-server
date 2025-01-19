@@ -10,6 +10,7 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3004;
 const SequelizeSessionStore = SequelizeStore(session.Store);
 const sess = {
@@ -17,11 +18,11 @@ const sess = {
   cookie: {
     maxAge: 24 * 60 * 60 * 1000, // alternative is using the expiration but docs prefer maxAge
     httpOnly: true, //not accessible to js e.g. document.cookie should not reveal it.
-    secure: true, // should be true, meaning it won't be sent on http requests, only https.
-    sameSite: 'none' as const, //protects against CSRF attacks
+    secure: process.env.NODE_ENV === 'production', // Only require secure in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     domain: '.onrender.com',
     path: '/',
-
+    proxy: true,
     //cross origin requests are allowed with sameSite: 'none' and secure: true
   },
   resave: false,
